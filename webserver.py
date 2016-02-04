@@ -47,7 +47,7 @@ class WebServerHandler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         try:
-            self.send_response(201)
+            self.send_response(301)
             self.end_headers()
             ctype, pdict = cgi.parse_header(self.headers.getheader(
                 'content-type'))
