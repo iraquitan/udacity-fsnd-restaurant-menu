@@ -9,12 +9,14 @@
  * Time: 16:01
  * To change this template use File | Settings | File Templates.
 """
-from flask import Flask, render_template, request, url_for, redirect, flash
+from flask import Flask, render_template, request, url_for, redirect, flash,\
+    jsonify
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from database_setup import Base, Restaurant, MenuItem
-app = Flask(__name__)
 
+from database_setup import Base, Restaurant, MenuItem
+
+app = Flask(__name__)
 
 engine = create_engine('sqlite:///restaurantmenu.db')
 Base.metadata.bind = engine
@@ -22,11 +24,28 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 
+# Making an API Endpoint (GET Request) for Menu Items
+@app.route('/restaurants/<int:restaurant_id>/menu/JSON')
+def restaurant_menu_json(restaurant_id):
+    restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
+    items = session.query(MenuItem).filter_by(
+        restaurant_id=restaurant.id).all()
+    return jsonify(MenuItems=[i.serialize for i in items])
+
+
+# Making an API Endpoint (GET Request) for single Menu Item JSON
+@app.route('/restaurants/<int:restaurant_id>/menu/<int:menu_id>/JSON')
+def restaurant_menu_item_json(restaurant_id, menu_id):
+    item = session.query(MenuItem).filter_by(id=menu_id).one()
+    return jsonify(MenuItem=item.serialize)
+
+
 @app.route('/')
-@app.route('/restaurants/<int:restaurant_id>/')
+@app.route('/restaurants/<int:restaurant_id>/menu')
 def restaurant_menu(restaurant_id):
     restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
-    items = session.query(MenuItem).filter_by(restaurant_id=restaurant.id)
+    items = session.query(MenuItem).filter_by(
+        restaurant_id=restaurant.id).all()
     return render_template('menu.html', restaurant=restaurant, items=items)
 
 
@@ -103,6 +122,7 @@ def delete_menu_item(restaurant_id, menu_id):
         return render_template('deletemenuitem.html',
                                restaurant_id=restaurant_id,
                                menu_id=menu_id, item=item)
+
 
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'
