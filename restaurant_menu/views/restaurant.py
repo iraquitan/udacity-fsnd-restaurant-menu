@@ -7,11 +7,13 @@
  * Date: 2/17/16
  * Time: 12:18 AM
 """
+from logging.handlers import RotatingFileHandler
+
 from restaurant_menu import app
 from flask import request, render_template, redirect, abort, flash, url_for, \
     jsonify
 from restaurant_menu import db
-from restaurant_menu.forms import RestaurantForm
+from restaurant_menu.forms import RestaurantForm, DeleteForm
 from restaurant_menu.models import Restaurant, MenuItem
 
 
@@ -44,11 +46,13 @@ def new_restaurant():
         new_rest = Restaurant(name=form.name.data)
         db.session.add(new_rest)
         db.session.commit()
-        print("Restaurant created!")
-        flash("Restaurant created!")
-        return "Redirect URL 'restaurants'"
+        if app.debug:
+            app.logger.debug("Restaurant {} added!".format((new_rest.id,
+                                                            new_rest.name)))
+        flash("Restaurant {} added!".format((new_rest.id, new_rest.name)))
+        return redirect(url_for('show_restaurants'))
     else:
-        return "Render template 'new_restaurant'"
+        return render_template('new_restaurant.html', form=form)
 
 
 @app.route('/restaurant/<int:restaurant_id>/edit', methods=['GET', 'POST'])
@@ -59,26 +63,33 @@ def edit_restaurant(restaurant_id):
         restaurant.name = form.name.data
         db.session.add(restaurant)
         db.session.commit()
-        print("Restaurant {} edited!".format((restaurant.id, restaurant.name)))
+        if app.debug:
+            app.logger.debug("Restaurant {} edited!".format((restaurant.id,
+                                                             restaurant.name)))
         flash("Restaurant {} edited!".format((restaurant.id, restaurant.name)))
-        return "Redirect URL 'restaurant_menu'"
+        return redirect(url_for('restaurant_menu',
+                                restaurant_id=restaurant_id))
     else:
-        return "Render template 'edit_restaurant'"
+        return render_template('editrestaurant.html', form=form,
+                               restaurant=restaurant)
 
 
 @app.route('/restaurant/<int:restaurant_id>/delete', methods=['GET', 'POST'])
 def delete_restaurant(restaurant_id):
-    restaurant = Restaurant.query.filter_by(id=restaurant_id)
-    if request.form == 'POST':
+    form = DeleteForm(request.form)
+    restaurant = Restaurant.query.filter_by(id=restaurant_id).one()
+    if form.validate_on_submit():
         db.session.delete(restaurant)
         db.session.commit()
-        print("Restaurant {} deleted!".format(
-            (restaurant.id, restaurant.name)))
+        if app.debug:
+            app.logger.debug("Restaurant {} deleted!".format(
+                (restaurant.id, restaurant.name)))
         flash("Restaurant {} deleted!".format(
             (restaurant.id, restaurant.name)))
-        return "Redirect URL 'restaurants'"
+        return redirect(url_for('show_restaurants'))
     else:
-        return "Render template 'delete_restaurant'"
+        return render_template('deleterestaurant.html', form=form,
+                               restaurant=restaurant)
 
 
 @app.route('/restaurant/<int:restaurant_id>/')
