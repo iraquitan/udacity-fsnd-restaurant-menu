@@ -1,0 +1,23 @@
+{% extends 'main.html' %}
+{% from 'macros.html' import render_fieldBS %}
+{% block content %}
+    <div class="row">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-6">
+            <h1> Edit Restaurant </h1>
+            <form action="{{ url_for('edit_restaurant', restaurant_id=restaurant.id) }}" method="POST">
+                {{ form.hidden_tag() }}
+                <fieldset>
+                    {{ render_fieldBS(form.name, placeholder=form.name.label.text) }}
+                </fieldset>
+                <br>
+                <fieldset class="text-right">
+                    <button type="submit" class="btn btn-primary">Edit</button>
+                    <a href="{{url_for('restaurant_menu', restaurant_id=restaurant.id)}}" class="btn btn-default" role="button">Cancel</a>
+                </fieldset>
+                <br><br>
+            </form>
+        </div>
+        <div class="col-lg-3"></div>
+    </div>
+{% endblock %}

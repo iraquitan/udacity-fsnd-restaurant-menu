@@ -1,5 +1,5 @@
 {% set navigation_bar = [
-    ('/', 'show_restaurants', 'Home'),
+    ('/', 'restaurants', 'Home'),
     ('#contact', 'contact', 'Contact'),
     ('#about', 'about', 'About')
 ] -%}
@@ -14,7 +14,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="{{ url_for('show_restaurants') }}">
-                <img alt="Brand" width="20" height="20" src="../../static/img/brand.ico">
+                <img alt="Brand" width="20" height="20" src="{{ url_for('static', filename='img/brand.ico') }}">
             </a>
             <a class="navbar-brand" href="{{ url_for('show_restaurants') }}">Restaurant Menu</a>
         </div>

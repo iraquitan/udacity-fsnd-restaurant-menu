@@ -7,13 +7,14 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="Iraquitan Cordeiro Filho">
-    <link rel="icon" href="../../static/img/favicon.ico">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
     <title>Restaurant Menu</title>
     <!-- Bootstrap core CSS -->
-    <link href="../../static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='custom.css')}}" rel="stylesheet">
 </head>
 <body>
-{% include "header.html" %}
+{% include 'header.html' %}
 <div class="container">
     {% block content %}
     {% endblock %}
@@ -22,8 +23,8 @@
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="../../static/assets/js/vendor/jquery.min.js"><\/script>')</script>
-<script src="../../static/js/bootstrap.min.js"></script>
-<script src="../../static/custom.js"></script>
+<script>window.jQuery || document.write('<script src="{{ url_for('static', filename='assets/js/vendor/jquery.min.js') }}"><\/script>')</script>
+<script src="{{ url_for('static', filename='js/bootstrap.min.js')}}"></script>
+<script src="{{ url_for('static', filename='custom.js')}}"></script>
 </body>
 </html>

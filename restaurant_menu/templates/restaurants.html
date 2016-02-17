@@ -1,4 +1,5 @@
 {% extends "main.html" %}
+{% set active_page = active_page|default('/') -%}
 {% block content %}
 {% with messages = get_flashed_messages() %}
 {% if messages %}
@@ -12,7 +13,6 @@
     </div>
 {% endif %}
 {% endwith %}
-<br><br><br>
 <div class="row">
     <div class="col-lg-1"></div>
     <div class="col-lg-10 text-right">
@@ -24,22 +24,25 @@
     </div>
     <div class="col-lg-1"></div>
 </div>
+<h1>Restaurants</h1>
 <div class="row">
-    <div class="col-lg-3"></div>
-    <div class="col-lg-6">
-        <h1>Restaurants</h1>
-    </div>
-    <div class="col-lg-3"></div>
-</div>
-{% for restaurant in restaurants %}
-    <a href = "{{url_for('restaurant_menu', restaurant_id=restaurant.id)}}">
-        <div class="row">
-            <div class="col-md-1"></div>
-                <div class="col-md-10 restaurant-list">
-                    <h3>{{restaurant.name}}</h3>
-                </div>
-            <div class="col-md-1"></div>
+    <div class="col-lg-1"></div>
+    <div class="col-lg-10">
+        {% for restaurant in restaurants %}
+        <div class="media">
+          <div class="media-left">
+            <a href="{{url_for('restaurant_menu', restaurant_id=restaurant.id)}}">
+              <img height="64" width="64" class="media-object" src="http://www.lacartes.com/images/no_image_placeholder.png" alt="{{restaurant.name}}">
+            </a>
+          </div>
+          <div class="media-body">
+              <a href = "{{url_for('restaurant_menu', restaurant_id=restaurant.id)}}">
+                  <h3>{{restaurant.name}}</h3>
+              </a>
+          </div>
         </div>
-    </a>
-{% endfor %}
+        {% endfor %}
+    </div>
+    <div class="col-lg-1"></div>
+</div>
 {% endblock %}
