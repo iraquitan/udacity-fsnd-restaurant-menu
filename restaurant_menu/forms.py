@@ -8,11 +8,8 @@
  * Time: 12:06 AM
 """
 from flask_wtf import Form
-from wtforms import StringField, FloatField, DateField, SelectField, \
-    TextAreaField, FormField, IntegerField, DecimalField, SelectMultipleField
-from wtforms.fields.html5 import URLField
-from wtforms.validators import url, InputRequired, Regexp, NumberRange, \
-    Optional, Email
+from wtforms import StringField, SelectField, TextAreaField, SubmitField
+from wtforms.validators import InputRequired, Regexp, Optional
 
 
 class RestaurantForm(Form):
@@ -20,15 +17,24 @@ class RestaurantForm(Form):
         InputRequired(message='Restaurant name is required')])
 
 
+class DeleteForm(Form):
+    delete = SubmitField('Delete')
+
+
 class MenuItemForm(Form):
     name = StringField('Menu item name', [
         InputRequired(message='Menu item name is required')])
     course = SelectField('Course',
-                         choices=[('entree', 'Entree'),
-                                  ('appetizer', 'Appetizer'),
-                                  ('dessert', 'Dessert'),
-                                  ('beverage', 'Beverage')
+                         choices=[('Entree', 'Entree'),
+                                  ('Appetizer', 'Appetizer'),
+                                  ('Dessert', 'Dessert'),
+                                  ('Beverage', 'Beverage')
                                   ])
     description = TextAreaField('Description', validators=[Optional()])
-    price = DecimalField('Item price', [
-        NumberRange(min=0, message='Must 0 or positive'), Optional()])
+    # price = DecimalField('Item price', [NumberRange(
+    #     min=0, message='Must 0 or positive'), Optional()])
+    price = StringField('Item price', [
+        Regexp('^((\$)|(R\$)|(\xA3)){1}\d{0,8}(\.\d{1,2})?$',
+               message='Not a valid price value. '
+                       'Must start with dollar, pound or br-real sign '
+                       'and only 2 decimals')])
