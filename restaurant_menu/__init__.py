@@ -7,12 +7,19 @@
  * Date: 2/17/16
  * Time: 12:02 AM
 """
+import json
 from logging.handlers import RotatingFileHandler
 
 from flask import Flask
 from flask.ext.mail import Mail
 from flask.ext.sqlalchemy import SQLAlchemy
 app = Flask(__name__, instance_relative_config=True)
+
+CLIENT_SECRETS_JSON = "../restaurant-menu/instance/client_secrets.json"
+CLIENT_ID = json.loads(
+    open(CLIENT_SECRETS_JSON, 'r').read()
+)['web']['client_id']
+APPLICATION_NAME = "Restaurant Menu Application"
 
 app.config.from_object('config')
 app.config.from_pyfile('config.py')
