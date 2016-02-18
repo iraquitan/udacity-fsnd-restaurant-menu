@@ -37,10 +37,10 @@ def new_menu_item(restaurant_id):
         db.session.add(new_item)
         db.session.commit()
         if app.debug:
-            app.logger.debug("New Menu {} Item Successfully Added".format(
+            app.logger.debug("New menu item {} successfully added".format(
                 (new_item.id, new_item.name))
             )
-        flash("New Menu {} Item Successfully Added".format(
+        flash("New menu item {} successfully added".format(
             (new_item.id, new_item.name))
         )
         return redirect(url_for('restaurant_menu',
@@ -64,10 +64,10 @@ def edit_menu_item(restaurant_id, menu_id):
         db.session.add(edited_item)
         db.session.commit()
         if app.debug:
-            app.logger.debug("Menu Item {} Successfully Edited".format(
+            app.logger.debug("Menu item {} successfully edited".format(
                 (edited_item.id, edited_item.name))
             )
-        flash("Menu Item {} Successfully Edited".format(
+        flash("Menu item {} successfully edited".format(
             (edited_item.id, edited_item.name))
         )
         return redirect(url_for('restaurant_menu',
@@ -88,10 +88,10 @@ def delete_menu_item(restaurant_id, menu_id):
         db.session.delete(item_to_delete)
         db.session.commit()
         if app.debug:
-            app.logger.debug("Menu Item {} Successfully Deleted".format(
+            app.logger.debug("Menu item {} successfully deleted".format(
                 (item_to_delete.id, item_to_delete.name))
             )
-        flash("Menu Item {} Successfully Deleted".format(
+        flash("Menu item {} successfully deleted".format(
             (item_to_delete.id, item_to_delete.name))
         )
         return redirect(url_for('restaurant_menu',
