@@ -7,8 +7,6 @@
  * Date: 2/17/16
  * Time: 12:18 AM
 """
-from logging.handlers import RotatingFileHandler
-
 from restaurant_menu import app
 from flask import request, render_template, redirect, abort, flash, url_for, \
     jsonify
