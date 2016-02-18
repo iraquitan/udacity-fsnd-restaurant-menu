@@ -23,4 +23,4 @@ if app.debug:
         '../restaurant-menu/restaurant_menu/basic-logging.txt',
         maxBytes=10000, backupCount=0)
     app.logger.addHandler(log_file_handler)
-from restaurant_menu.views import restaurant, menu_item
+from restaurant_menu.views import main, restaurant, menu_item
