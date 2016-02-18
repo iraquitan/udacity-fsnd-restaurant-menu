@@ -3,7 +3,11 @@
     ('#contact', 'contact', 'Contact'),
     ('#about', 'about', 'About')
 ] -%}
-{% set active_page = active_page|default('/') -%}
+{% set navigation_bar_right = [
+    ('#signup', 'signup', ' Sign Up', 'glyphicon glyphicon-user'),
+    ('/login', 'login', ' Login', 'glyphicon glyphicon-log-in')
+] -%}
+{% set active_page = active_page|default('restaurants') -%}
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -27,8 +31,10 @@
                 {% endfor %}
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                {% for href, id, caption, icon in navigation_bar_right %}
+                    <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}"><span class="{{ icon|e }}"></span>{{ caption|e }}</a></li>
+                {% endfor %}
+{#                <li><a href="{{ url_for('show_login') }}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>#}
             </ul>
         </div><!--/.nav-collapse -->
     </div>

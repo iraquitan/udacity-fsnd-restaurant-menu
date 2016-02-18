@@ -1,48 +1,49 @@
 {% extends "main.html" %}
-{% set active_page = active_page|default('/') -%}
 {% block content %}
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-    <div class="alert alert-success alert-dismissible" role="alert">
-        <ul>
-            {% for message in messages %}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <strong>Success!</strong> {{ message }}
-            {% endfor %}
-        </ul>
-    </div>
-{% endif %}
-{% endwith %}
-<div class="row">
-    <div class="col-lg-1"></div>
-    <div class="col-lg-10 text-right">
-        <a href="{{url_for('new_restaurant')}}">
-            <button class="btn btn-primary" id="new-restaurant">
-                <span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span> Add Restaurant
-            </button>
-        </a>
-    </div>
-    <div class="col-lg-1"></div>
-</div>
-<h1>Restaurants</h1>
-<div class="row">
-    <div class="col-lg-1"></div>
-    <div class="col-lg-10">
-        {% for restaurant in restaurants %}
-        <div class="media">
-          <div class="media-left">
-            <a href="{{url_for('restaurant_menu', restaurant_id=restaurant.id)}}">
-              <img height="64" width="64" class="media-object" src="http://www.lacartes.com/images/no_image_placeholder.png" alt="{{restaurant.name}}">
-            </a>
-          </div>
-          <div class="media-body">
-              <a href = "{{url_for('restaurant_menu', restaurant_id=restaurant.id)}}">
-                  <h3>{{restaurant.name}}</h3>
-              </a>
-          </div>
+    {% set active_page = 'restaurants' %}
+    {% include 'header.html' %}
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="alert alert-success alert-dismissible" role="alert">
+            <ul>
+                {% for message in messages %}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>Success!</strong> {{ message }}
+                {% endfor %}
+            </ul>
         </div>
-        {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10 text-right">
+            <a href="{{url_for('new_restaurant')}}">
+                <button class="btn btn-primary" id="new-restaurant">
+                    <span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span> Add Restaurant
+                </button>
+            </a>
+        </div>
+        <div class="col-lg-1"></div>
     </div>
-    <div class="col-lg-1"></div>
-</div>
+    <h1>Restaurants</h1>
+    <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10">
+            {% for restaurant in restaurants %}
+            <div class="media">
+              <div class="media-left">
+                <a href="{{url_for('restaurant_menu', restaurant_id=restaurant.id)}}">
+                  <img height="64" width="64" class="media-object" src="http://www.lacartes.com/images/no_image_placeholder.png" alt="{{restaurant.name}}">
+                </a>
+              </div>
+              <div class="media-body">
+                  <a href = "{{url_for('restaurant_menu', restaurant_id=restaurant.id)}}">
+                      <h3>{{restaurant.name}}</h3>
+                  </a>
+              </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col-lg-1"></div>
+    </div>
 {% endblock %}
