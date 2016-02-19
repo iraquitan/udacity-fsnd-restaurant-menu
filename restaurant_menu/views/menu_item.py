@@ -10,6 +10,7 @@
 from restaurant_menu import app
 from flask import request, render_template, redirect, abort, flash, url_for, \
     jsonify
+from flask import session as login_session
 from restaurant_menu import db
 from restaurant_menu.forms import MenuItemForm, DeleteForm
 from restaurant_menu.models import Restaurant, MenuItem
@@ -26,6 +27,9 @@ def menu_item_json(restaurant_id, menu_id):
 @app.route('/restaurant/<int:restaurant_id>/menu/new/',
            methods=['GET', 'POST'])
 def new_menu_item(restaurant_id):
+    credentials = login_session.get('credentials')
+    if credentials is None:
+        return redirect('/login')
     form = MenuItemForm(request.form)
     restaurant = Restaurant.query.filter_by(id=restaurant_id).one()
     if form.validate_on_submit():
@@ -53,6 +57,9 @@ def new_menu_item(restaurant_id):
 @app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/edit',
            methods=['GET', 'POST'])
 def edit_menu_item(restaurant_id, menu_id):
+    credentials = login_session.get('credentials')
+    if credentials is None:
+        return redirect('/login')
     edited_item = MenuItem.query.filter_by(id=menu_id).one()
     form = MenuItemForm(obj=edited_item)
     restaurant = Restaurant.query.filter_by(id=restaurant_id).one()
@@ -81,6 +88,9 @@ def edit_menu_item(restaurant_id, menu_id):
 @app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/delete',
            methods=['GET', 'POST'])
 def delete_menu_item(restaurant_id, menu_id):
+    credentials = login_session.get('credentials')
+    if credentials is None:
+        return redirect('/login')
     form = DeleteForm(request.form)
     restaurant = Restaurant.query.filter_by(id=restaurant_id).one()
     item_to_delete = MenuItem.query.filter_by(id=menu_id).one()

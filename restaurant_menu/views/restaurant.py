@@ -10,9 +10,10 @@
 from restaurant_menu import app
 from flask import request, render_template, redirect, abort, flash, url_for, \
     jsonify
+from flask import session as login_session
 from restaurant_menu import db
 from restaurant_menu.forms import RestaurantForm, DeleteForm
-from restaurant_menu.models import Restaurant, MenuItem
+from restaurant_menu.models import User, Restaurant, MenuItem
 
 
 # JSON APIs
@@ -39,6 +40,9 @@ def show_restaurants():
 
 @app.route('/restaurant/new', methods=['GET', 'POST'])
 def new_restaurant():
+    credentials = login_session.get('credentials')
+    if credentials is None:
+        return redirect('/login')
     form = RestaurantForm(request.form)
     if form.validate_on_submit():
         new_rest = Restaurant(name=form.name.data)
@@ -55,6 +59,9 @@ def new_restaurant():
 
 @app.route('/restaurant/<int:restaurant_id>/edit', methods=['GET', 'POST'])
 def edit_restaurant(restaurant_id):
+    credentials = login_session.get('credentials')
+    if credentials is None:
+        return redirect('/login')
     restaurant = Restaurant.query.filter_by(id=restaurant_id).one()
     form = RestaurantForm(obj=restaurant)
     if form.validate_on_submit():
@@ -74,6 +81,9 @@ def edit_restaurant(restaurant_id):
 
 @app.route('/restaurant/<int:restaurant_id>/delete', methods=['GET', 'POST'])
 def delete_restaurant(restaurant_id):
+    credentials = login_session.get('credentials')
+    if credentials is None:
+        return redirect('/login')
     form = DeleteForm(request.form)
     restaurant = Restaurant.query.filter_by(id=restaurant_id).one()
     if form.validate_on_submit():
