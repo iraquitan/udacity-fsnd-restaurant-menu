@@ -10,5 +10,6 @@
 DEBUG = True
 SQLALCHEMY_ECHO = True
 SECRET_KEY = 'super_secret_key'
-SQLALCHEMY_DATABASE_URI = "sqlite:///../restaurant_menu/temp/restaurantmenu.db"
+# SQLALCHEMY_DATABASE_URI = "sqlite:///../restaurant_menu/temp/restaurantmenu.db"  # noqa
+SQLALCHEMY_DATABASE_URI = "sqlite:///../restaurant_menu/temp/restaurantmenu-withusers.db"  # noqa
 SQLALCHEMY_TRACK_MODIFICATIONS = False
