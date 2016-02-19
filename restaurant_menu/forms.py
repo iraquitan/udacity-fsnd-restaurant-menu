@@ -9,7 +9,17 @@
 """
 from flask_wtf import Form
 from wtforms import StringField, SelectField, TextAreaField, SubmitField
-from wtforms.validators import InputRequired, Regexp, Optional
+from wtforms.fields.html5 import EmailField, URLField
+from wtforms.validators import InputRequired, Regexp, Optional, url
+
+
+class UserForm(Form):
+    name = StringField('User name', [
+        InputRequired(message='User name is required')])
+    email = EmailField('User email', [
+        InputRequired(message='User email is required')])
+    picture = URLField('User picture', [url(message='Not a valid URL'),
+                                        Optional()])
 
 
 class RestaurantForm(Form):
