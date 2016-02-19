@@ -4,7 +4,7 @@
     ('#about', 'about', 'About')
 ] -%}
 {% set navigation_bar_right = [
-    ('#signup', 'signup', ' Sign Up', 'glyphicon glyphicon-user'),
+    ('/gdisconnect', 'signup', ' Sign Up', 'glyphicon glyphicon-user'),
     ('/login', 'login', ' Login', 'glyphicon glyphicon-log-in')
 ] -%}
 {% set active_page = active_page|default('restaurants') -%}
@@ -34,7 +34,6 @@
                 {% for href, id, caption, icon in navigation_bar_right %}
                     <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}"><span class="{{ icon|e }}"></span>{{ caption|e }}</a></li>
                 {% endfor %}
-{#                <li><a href="{{ url_for('show_login') }}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>#}
             </ul>
         </div><!--/.nav-collapse -->
     </div>
