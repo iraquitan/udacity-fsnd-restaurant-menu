@@ -20,8 +20,12 @@
         </div>
         <div class="col-lg-2 padding-none">
             <figure>
-                <img class="img-responsive img-thumbnail creator-img" src="{{ url_for('static', filename='img/blank_user.gif') }}">
-                <figcaption class="creator-figcaption">Menu creator's name goes here</figcaption>
+                {% if creator.picture %}
+                    <img class="img-responsive img-thumbnail creator-img" src="{{ creator.picture }}">
+                {% else %}
+                    <img class="img-responsive img-thumbnail creator-img" src="{{ url_for('static', filename='img/blank_user.gif') }}">
+                {% endif %}
+                <figcaption class="creator-figcaption">{{ creator.name }}</figcaption>
             </figure>
         </div>
     </div>
