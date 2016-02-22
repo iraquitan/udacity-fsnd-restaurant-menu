@@ -7,9 +7,11 @@
  * Date: 2/17/16
  * Time: 1:01 AM
 """
+import json
+
 from restaurant_menu import app
 from flask import request, render_template, redirect, abort, flash, url_for, \
-    jsonify
+    jsonify, make_response
 from flask import session as login_session
 from restaurant_menu import db
 from restaurant_menu.forms import MenuItemForm, DeleteForm
@@ -27,11 +29,18 @@ def menu_item_json(restaurant_id, menu_id):
 @app.route('/restaurant/<int:restaurant_id>/menu/new/',
            methods=['GET', 'POST'])
 def new_menu_item(restaurant_id):
-    credentials = login_session.get('credentials')
-    if credentials is None:
+    username = login_session.get('username')
+    if username is None:
         return redirect('/login')
     form = MenuItemForm(request.form)
     restaurant = Restaurant.query.filter_by(id=restaurant_id).one()
+    # Check if the current user is the creator
+    if login_session.get('user_id') != restaurant.user_id:
+        return "<script>function myFunction() {" \
+               "alert('You are not authorized to create menu items in " \
+               "this restaurant. Please create your own restaurant in " \
+               "order to create menu items.');" \
+               "}</script><body onload='myFunction()'>"
     if form.validate_on_submit():
         new_item = MenuItem(name=form.name.data,
                             description=form.description.data,
@@ -57,12 +66,19 @@ def new_menu_item(restaurant_id):
 @app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/edit',
            methods=['GET', 'POST'])
 def edit_menu_item(restaurant_id, menu_id):
-    credentials = login_session.get('credentials')
-    if credentials is None:
+    username = login_session.get('username')
+    if username is None:
         return redirect('/login')
     edited_item = MenuItem.query.filter_by(id=menu_id).one()
     form = MenuItemForm(obj=edited_item)
     restaurant = Restaurant.query.filter_by(id=restaurant_id).one()
+    # Check if the current user is the creator
+    if login_session.get('user_id') != restaurant.user_id:
+        return "<script>function myFunction() {" \
+               "alert('You are not authorized to edit menu items in " \
+               "this restaurant. Please create your own restaurant in " \
+               "order to edit menu items.');" \
+               "}</script><body onload='myFunction()'>"
     if form.validate_on_submit():
         edited_item.name = form.name.data
         edited_item.description = form.description.data
@@ -88,11 +104,18 @@ def edit_menu_item(restaurant_id, menu_id):
 @app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/delete',
            methods=['GET', 'POST'])
 def delete_menu_item(restaurant_id, menu_id):
-    credentials = login_session.get('credentials')
-    if credentials is None:
+    username = login_session.get('username')
+    if username is None:
         return redirect('/login')
     form = DeleteForm(request.form)
     restaurant = Restaurant.query.filter_by(id=restaurant_id).one()
+    # Check if the current user is the creator
+    if login_session.get('user_id') != restaurant.user_id:
+        return "<script>function myFunction() {" \
+               "alert('You are not authorized to delete menu items in " \
+               "this restaurant. Please create your own restaurant in " \
+               "order to delete menu items.');" \
+               "}</script><body onload='myFunction()'>"
     item_to_delete = MenuItem.query.filter_by(id=menu_id).one()
     if form.validate_on_submit():
         db.session.delete(item_to_delete)
