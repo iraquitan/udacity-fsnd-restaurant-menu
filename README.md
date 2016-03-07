@@ -5,6 +5,7 @@ Project for a restaurant menu app, where users can add, edit and remove restaura
 * [Requirements](#requirements)
 * [Quick start](#quick-start)
 * [Creator](#creator)
+* [License](#license)
 
 ## Requirements
 * Python 2.7
@@ -45,3 +46,6 @@ OAUTH_CREDENTIALS = {
 
 * <https://twitter.com/iraquitan_filho>
 * <https://github.com/iraquitan>
+
+## License
+The contents of this repository are covered under the [MIT License](LICENSE).
